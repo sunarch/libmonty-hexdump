@@ -2,6 +2,14 @@
 
 Python library - a hex hump utility
 
+## Installation
+
+The package is on PyPI: [libmonty-hexdump](https://pypi.org/project/libmonty-hexdump/)
+
+```
+pip install libmonty-hexdump
+```
+
 ## License
 
 [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
