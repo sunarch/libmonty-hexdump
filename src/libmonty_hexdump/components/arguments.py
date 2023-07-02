@@ -5,10 +5,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+# imports: library
 from typing import Tuple, Callable, Union
 
+# imports: dependencies
 from libmonty.formatting import char_str, number_str
 
+# imports: project
 from libmonty_hexdump.components import streams
 
 
