@@ -61,13 +61,13 @@ def main_lib(args: Namespace) -> None:
         i_bytes_per_line = arguments.bytes_per_line(args.bytes_per_line)
         i_sleep = arguments.sleep(args.sleep)
         index_converter = arguments.index_converter(args.index_format)
-    except ValueError:
-        raise
+    except ValueError as exc:
+        raise ValueError from exc
 
     try:
         run(stream, index_converter, char_converter, i_bytes_per_line, i_sleep)
-    except ValueError:
-        raise
+    except ValueError as exc:
+        raise ValueError from exc
 
 
 def run(stream: Callable = None,

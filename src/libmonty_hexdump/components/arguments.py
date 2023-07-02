@@ -57,8 +57,8 @@ def stream(source: Union[Callable, str]) -> Tuple[Callable, Callable]:
         else:
             try:
                 f_stream = streams.create_from_file(source)
-            except FileNotFoundError as err:
-                raise ValueError(str(err))
+            except FileNotFoundError as exc:
+                raise ValueError(str(exc)) from exc
 
             f_char_converter = char_str.byte_to_compact_printable_with_frames
 
