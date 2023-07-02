@@ -1,2 +1,2 @@
-libmonty == 0.0.3
+libmonty == 0.1.0
 libmonty-logging == 0.1.1
