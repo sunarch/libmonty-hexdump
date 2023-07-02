@@ -91,7 +91,7 @@ def sleep(speed: Union[float, int, str]) -> float:
     if isinstance(speed, int):
         speed = float(speed)
 
-    if isinstance(speed, float) or isinstance(speed, int):
+    if isinstance(speed, (float, int)):
         if speed <= 0:
             raise ValueError
 
