@@ -37,7 +37,7 @@ def determine_count_per_line(cols: int = 80,
 def min_line_length(bytes_per_line: int) -> int:
     """Minimum line length"""
 
-    i_line = len(lines.construct(bytes(bytes_per_line), bytes_per_line))
-    i_line_end = 1
+    line_length: int = len(lines.construct(bytes(bytes_per_line), bytes_per_line))
+    line_end_character_offset: int = 1
 
-    return i_line + i_line_end
+    return line_length + line_end_character_offset

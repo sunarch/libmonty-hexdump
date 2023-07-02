@@ -9,7 +9,8 @@
 """
 
 # imports: library
-from typing import Tuple, Callable, Union
+from argparse import ArgumentParser
+from typing import Callable, Union
 
 # imports: dependencies
 from libmonty.formatting import char_str, number_str
@@ -18,7 +19,7 @@ from libmonty.formatting import char_str, number_str
 from libmonty_hexdump.components import streams
 
 
-def create_arguments(parser_hexer):
+def create_arguments(parser_hexer: ArgumentParser) -> None:
     """Create arguments"""
 
     parser_hexer.add_argument('-s', '--stream',
@@ -42,25 +43,25 @@ def create_arguments(parser_hexer):
                               dest='index_format')
 
 
-def stream(source: Union[Callable, str]) -> Tuple[Callable, Callable]:
+def stream(source: Union[Callable, str]) -> (Callable, Callable):
     """Stream source"""
 
     if isinstance(source, Callable):
-        f_stream = source
-        f_char_converter = char_str.byte_to_compact_printable_with_dots
+        f_stream: Callable = source
+        f_char_converter: Callable = char_str.byte_to_compact_printable_with_dots
 
     else:
         if source == 'random':
-            f_stream = streams.random_data
-            f_char_converter = char_str.byte_to_compact_printable_with_dots
+            f_stream: Callable = streams.random_data
+            f_char_converter: Callable = char_str.byte_to_compact_printable_with_dots
 
         else:
             try:
-                f_stream = streams.create_from_file(source)
+                f_stream: Callable = streams.create_from_file(source)
             except FileNotFoundError as exc:
                 raise ValueError(str(exc)) from exc
 
-            f_char_converter = char_str.byte_to_compact_printable_with_frames
+            f_char_converter: Callable = char_str.byte_to_compact_printable_with_frames
 
     return f_stream, f_char_converter
 
@@ -77,7 +78,7 @@ def bytes_per_line(count: int) -> int:
 def sleep(speed: Union[float, int, str]) -> float:
     """Sleep"""
 
-    d_speeds = {
+    speeds: dict[str, float] = {
         'f': 0.01,
         'fast': 0.01,
         'm': 0.05,
@@ -89,7 +90,7 @@ def sleep(speed: Union[float, int, str]) -> float:
     }
 
     if isinstance(speed, int):
-        speed = float(speed)
+        speed: float = float(speed)
 
     if isinstance(speed, (float, int)):
         if speed <= 0:
@@ -97,7 +98,7 @@ def sleep(speed: Union[float, int, str]) -> float:
 
     elif isinstance(speed, str):
         try:
-            speed = d_speeds[speed]
+            speed: float = speeds[speed]
         except KeyError:
             print(f'Bad value for \'sleep\': \'{speed}\'')
             speed = 0.01
@@ -109,7 +110,7 @@ def sleep(speed: Union[float, int, str]) -> float:
 def index_converter(converter: Union[Callable, str]) -> Callable:
     """Index converter"""
 
-    d_index_formats = {
+    index_formats: dict[str, Callable] = {
         'h': number_str.hexadecimal,
         'hex': number_str.hexadecimal,
         'hexadecimal': number_str.hexadecimal,
@@ -127,9 +128,9 @@ def index_converter(converter: Union[Callable, str]) -> Callable:
         return converter
 
     try:
-        return d_index_formats[converter]
+        return index_formats[converter]
     except KeyError:
         print(f'Value for index format not recognized: \'{converter}\'')
-        converter = 'hexadecimal'
+        converter: str = 'hexadecimal'
         print(f'Using default value for index format: \'{converter}\'')
-        return d_index_formats[converter]
+        return index_formats[converter]

@@ -25,24 +25,24 @@ def print_header(bytes_per_line: int,
                  ) -> None:
     """Print header"""
 
-    s_counter = f'Offset ({index_converter(-1)})'
-    s_line = f' {s_counter:^{COUNTER_DIGITS + extra_width}}  '
+    counter_text: str = f'Offset ({index_converter(-1)})'
+    line: str = f' {counter_text:^{COUNTER_DIGITS + extra_width}}  '
 
     try:
-        b_unit = bytes(range(bytes_per_line))
+        bytes_unit: bytes = bytes(range(bytes_per_line))
     except ValueError:
         if bytes_per_line > 256:
-            full = bytes(range(256)) * (bytes_per_line // 256)
-            fraction = bytes(range(bytes_per_line % 256))
-            b_unit = full + fraction
+            full: bytes = bytes(range(256)) * (bytes_per_line // 256)
+            fraction: bytes = bytes(range(bytes_per_line % 256))
+            bytes_unit: bytes = full + fraction
         else:
             raise
 
-    s_line += _part_bytes(b_unit, bytes_per_line, index_converter)
+    line += _part_bytes(bytes_unit, bytes_per_line, index_converter)
 
-    s_line += 'Decoded text'
+    line += 'Decoded text'
 
-    print(s_line, flush=True)
+    print(line, flush=True)
 
 
 def print_data(b_unit: bytes,
@@ -54,14 +54,16 @@ def print_data(b_unit: bytes,
                ) -> None:
     """Print data"""
 
-    s = construct(b_unit,
-                  bytes_per_line,
-                  offset,
-                  index_converter,
-                  char_converter,
-                  extra_width)
+    text: str = construct(
+        b_unit,
+        bytes_per_line,
+        offset,
+        index_converter,
+        char_converter,
+        extra_width
+    )
 
-    print(s, flush=True)
+    print(text, flush=True)
 
 
 def construct(b_unit: bytes,
@@ -73,13 +75,13 @@ def construct(b_unit: bytes,
               ) -> str:
     """Construct"""
 
-    s_counter = _part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
+    counter_text: str = _part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
 
-    s_bytes = _part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
+    bytes_text: str = _part_bytes(b_unit, bytes_per_line, number_str.hexadecimal)
 
-    s_chars = _part_chars(b_unit, char_converter)
+    chars_text: str = _part_chars(b_unit, char_converter)
 
-    return s_counter + s_bytes + s_chars
+    return counter_text + bytes_text + chars_text
 
 
 def _part_counter(offset: int = 0,
@@ -97,18 +99,18 @@ def _part_bytes(b_unit: bytes,
                 ) -> str:
     """Part: bytes"""
 
-    s_bytes = ' '.join(map(lambda b: number_converter(b, 2), b_unit))
+    bytes_text: str = ' '.join(map(lambda b: number_converter(b, 2), b_unit))
 
     if len(b_unit) < bytes_per_line:
-        s_format = '{:<' + str((bytes_per_line * 3) - 1) + '}'
-        s_bytes = s_format.format(s_bytes)
+        format_string: str = '{:<' + str((bytes_per_line * 3) - 1) + '}'
+        bytes_text: str = format_string.format(bytes_text)
 
-    return s_bytes + '  '
+    return bytes_text + '  '
 
 
-def _part_chars(b_unit: bytes,
+def _part_chars(bytes_unit: bytes,
                 char_converter: Callable = char_str.pseudo,
                 ) -> str:
     """Part: chars"""
 
-    return ''.join(map(char_converter, b_unit))
+    return ''.join(map(char_converter, bytes_unit))

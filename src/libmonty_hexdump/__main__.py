@@ -44,7 +44,7 @@ def main() -> None:
 
     arguments.create_arguments(parser)
 
-    args = parser.parse_args()
+    args: Namespace = parser.parse_args()
 
     if args.version:
         print(f'{version.PROGRAM_NAME} {version.__version__}')
@@ -58,14 +58,14 @@ def main_lib(args: Namespace) -> None:
 
     try:
         stream, char_converter = arguments.stream(args.stream)
-        i_bytes_per_line = arguments.bytes_per_line(args.bytes_per_line)
-        i_sleep = arguments.sleep(args.sleep)
-        index_converter = arguments.index_converter(args.index_format)
+        bytes_per_line: int = arguments.bytes_per_line(args.bytes_per_line)
+        sleep_seconds: float = arguments.sleep(args.sleep)
+        index_converter: Callable = arguments.index_converter(args.index_format)
     except ValueError as exc:
         raise ValueError from exc
 
     try:
-        run(stream, index_converter, char_converter, i_bytes_per_line, i_sleep)
+        run(stream, index_converter, char_converter, bytes_per_line, sleep_seconds)
     except ValueError as exc:
         raise ValueError from exc
 
@@ -74,7 +74,7 @@ def run(stream: Callable = None,
         index_converter: Callable = None,
         char_converter: Callable = None,
         bytes_per_line: int = 0,
-        sleep: float = 0.1
+        sleep_seconds: float = 0.1
         ) -> None:
     """Run"""
 
@@ -89,37 +89,37 @@ def run(stream: Callable = None,
 
     print('')
 
-    i_extra_width = 0
+    extra_width: int = 0
 
     if bytes_per_line <= 0:
-        i_cols = terminal.get_cols()
+        column_count: int = terminal.get_cols()
 
-        full_width = False
+        is_full_width: bool = False
         if bytes_per_line <= -1:
-            full_width = True
+            is_full_width: bool = True
 
-        bytes_per_line = width.determine_count_per_line(i_cols, full_width)
+        bytes_per_line: int = width.determine_count_per_line(column_count, is_full_width)
 
-        if full_width:
-            i_extra_width = i_cols - width.min_line_length(bytes_per_line)
+        if is_full_width:
+            extra_width: int = column_count - width.min_line_length(bytes_per_line)
 
-    i_offset = 0
+    offset: int = 0
 
-    lines.print_header(bytes_per_line, index_converter, i_extra_width)
+    lines.print_header(bytes_per_line, index_converter, extra_width)
     print('')
 
-    for b_unit in stream(bytes_per_line):
+    for bytes_unit in stream(bytes_per_line):
 
         try:
-            lines.print_data(b_unit,
+            lines.print_data(bytes_unit,
                              bytes_per_line,
-                             i_offset,
+                             offset,
                              index_converter,
                              char_converter,
-                             i_extra_width)
-            time.sleep(sleep)
+                             extra_width)
+            time.sleep(sleep_seconds)
 
-            i_offset += bytes_per_line
+            offset += bytes_per_line
 
         except KeyboardInterrupt:
             break
