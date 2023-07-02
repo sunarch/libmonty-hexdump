@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Lines
+"""
+
 # imports: library
 from typing import Callable
 
@@ -20,6 +23,7 @@ def print_header(bytes_per_line: int,
                  index_converter: Callable,
                  extra_width: int
                  ) -> None:
+    """Print header"""
 
     s_counter = f'Offset ({index_converter(-1)})'
     s_line = f' {s_counter:^{COUNTER_DIGITS + extra_width}}  '
@@ -48,6 +52,7 @@ def print_data(b_unit: bytes,
                char_converter: Callable,
                extra_width: int
                ) -> None:
+    """Print data"""
 
     s = construct(b_unit,
                   bytes_per_line,
@@ -66,6 +71,7 @@ def construct(b_unit: bytes,
               char_converter: Callable = char_str.pseudo,
               extra_width: int = 0
               ) -> str:
+    """Construct"""
 
     s_counter = _part_counter(offset, COUNTER_DIGITS + extra_width, index_converter)
 
@@ -80,6 +86,7 @@ def _part_counter(offset: int = 0,
                   digits: int = COUNTER_DIGITS,
                   index_formatter: Callable = number_str.pseudo,
                   ) -> str:
+    """Part: counter"""
 
     return ' ' + index_formatter(offset, digits) + '  '
 
@@ -88,6 +95,7 @@ def _part_bytes(b_unit: bytes,
                 bytes_per_line: int,
                 number_converter: Callable = number_str.pseudo
                 ) -> str:
+    """Part: bytes"""
 
     s_bytes = ' '.join(map(lambda b: number_converter(b, 2), b_unit))
 
@@ -101,5 +109,6 @@ def _part_bytes(b_unit: bytes,
 def _part_chars(b_unit: bytes,
                 char_converter: Callable = char_str.pseudo,
                 ) -> str:
+    """Part: chars"""
 
     return ''.join(map(char_converter, b_unit))

@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Arguments
+"""
+
 # imports: library
 from typing import Tuple, Callable, Union
 
@@ -16,6 +19,7 @@ from libmonty_hexdump.components import streams
 
 
 def create_arguments(parser_hexer):
+    """Create arguments"""
 
     parser_hexer.add_argument('-s', '--stream',
                               help='Stream',
@@ -39,6 +43,7 @@ def create_arguments(parser_hexer):
 
 
 def stream(source: Union[Callable, str]) -> Tuple[Callable, Callable]:
+    """Stream source"""
 
     if isinstance(source, Callable):
         f_stream = source
@@ -61,6 +66,7 @@ def stream(source: Union[Callable, str]) -> Tuple[Callable, Callable]:
 
 
 def bytes_per_line(count: int) -> int:
+    """Bytes per line"""
 
     if count < 1:
         raise ValueError
@@ -69,6 +75,7 @@ def bytes_per_line(count: int) -> int:
 
 
 def sleep(speed: Union[float, int, str]) -> float:
+    """Sleep"""
 
     d_speeds = {
         'f': 0.01,
@@ -100,6 +107,7 @@ def sleep(speed: Union[float, int, str]) -> float:
 
 
 def index_converter(converter: Union[Callable, str]) -> Callable:
+    """Index converter"""
 
     d_index_formats = {
         'h': number_str.hexadecimal,

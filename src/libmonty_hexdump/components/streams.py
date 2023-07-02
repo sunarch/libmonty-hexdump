@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Streams
+"""
+
 # imports: library
 import os.path
 import random
@@ -12,6 +15,7 @@ from typing import Callable, Generator
 
 
 def create_from_file(path: str) -> Callable:
+    """Create from file"""
 
     if not os.path.isfile(path):
         raise FileNotFoundError(f'File not found: \'{path}\'')
@@ -34,6 +38,7 @@ def create_from_file(path: str) -> Callable:
 
 
 def random_data(bytes_per_line: int) -> Generator:
+    """Random data"""
 
     while True:
         yield random.randbytes(bytes_per_line)

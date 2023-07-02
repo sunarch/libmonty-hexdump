@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""Width
+"""
+
 # imports: project
 from libmonty_hexdump.components import lines
 
@@ -12,6 +15,7 @@ from libmonty_hexdump.components import lines
 def determine_count_per_line(cols: int = 80,
                              full_width: bool = False
                              ) -> int:
+    """Determine count per line"""
 
     if full_width:
         for count in range(1, cols):
@@ -31,6 +35,7 @@ def determine_count_per_line(cols: int = 80,
 
 
 def min_line_length(bytes_per_line: int) -> int:
+    """Minimum line length"""
 
     i_line = len(lines.construct(bytes(bytes_per_line), bytes_per_line))
     i_line_end = 1

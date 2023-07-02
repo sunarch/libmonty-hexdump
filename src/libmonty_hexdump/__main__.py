@@ -5,6 +5,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+"""hexdump - main
+"""
+
 # imports: library
 from argparse import ArgumentParser, Namespace
 import time
@@ -24,6 +27,7 @@ from libmonty_hexdump.components import lines
 
 
 def main() -> None:
+    """Main"""
 
     logging_helper.apply_config(version.PROGRAM_NAME,
                                 version.__version__,
@@ -50,6 +54,7 @@ def main() -> None:
 
 
 def main_lib(args: Namespace) -> None:
+    """Main lib"""
 
     try:
         stream, char_converter = arguments.stream(args.stream)
@@ -71,6 +76,7 @@ def run(stream: Callable = None,
         bytes_per_line: int = 0,
         sleep: float = 0.1
         ) -> None:
+    """Run"""
 
     if stream is None:
         raise ValueError('No input stream specified!')
